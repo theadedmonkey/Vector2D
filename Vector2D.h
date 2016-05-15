@@ -19,9 +19,16 @@ class Vector2D {
     void normalize();
 
     Vector2D operator+(const Vector2D& v2);
+    Vector2D operator+=(const Vector2D& v2);
+
     Vector2D operator-(const Vector2D& v2);
+    Vector2D operator-=(const Vector2D& v2);
+
     Vector2D operator*(float scalar);
+    Vector2D operator*=(float scalar);
+
     Vector2D operator/(float scalar);
+    Vector2D operator/=(float scalar);
 };
 
 #endif
