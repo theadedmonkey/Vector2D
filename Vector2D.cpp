@@ -1,81 +1,107 @@
 #include "Vector2D.h"
 #include <math.h>
 
-Vector2D::Vector2D() {
-  m_x = 0;
-  m_y = 0;
+// constructors
+Vector2D::Vector2D() {}
+Vector2D::Vector2D(float nx, float ny) : x(nx), y(ny) {}
+
+// zero
+void Vector2D::zero() {
+  x = y = 0.0f;
 }
 
-Vector2D::Vector2D(float x, float y) {
-  m_x = x;
-  m_y = y;
+// equality
+bool Vector2D::operator==(const Vector2D &v2) const {
+  return x == v2.x && y == v2.y;
+}
+bool Vector2D::operator!=(const Vector2D &v2) const {
+  return x != v2.x || y != v2.y;
 }
 
-float Vector2D::getX() {
-  return m_x;
+// negative
+Vector2D Vector2D::operator -() const {
+  return Vector2D(-x, -y);
 }
 
-float Vector2D::getY() {
-  return m_y;
+// binary addition
+Vector2D Vector2D::operator+(const Vector2D &v2) const {
+  return Vector2D(x + v2.x, y + v2.y);
 }
 
-float Vector2D::setX(float x) {
-  return m_x = x;
+// binary subtraction
+Vector2D Vector2D::operator-(const Vector2D &v2) const {
+  return Vector2D(x - v2.x, y - v2.y);
 }
 
-float Vector2D::setY(float y) {
-  return m_y = y;
+// scalar multiplication
+Vector2D Vector2D::operator*(float scalar) const {
+  return Vector2D(x * scalar, y * scalar);
 }
 
-float Vector2D::length() {
-  return sqrt(m_x * m_x + m_y * m_y);
+// scalar division
+Vector2D Vector2D::operator/(float scalar) const {
+  /*
+   * NOTE: no check for division by 0
+   */
+  float oneOverScalar = 1.0f / scalar;
+  return Vector2D(x * oneOverScalar, y * oneOverScalar);
 }
 
+// combined addition
+Vector2D Vector2D::operator+=(const Vector2D& v2) {
+  x += v2.x;
+  y += v2.y;
+  return *this;
+}
+
+// combined subtraction
+Vector2D Vector2D::operator-=(const Vector2D& v2) {
+  x -= v2.x;
+  y -= v2.y;
+  return *this;
+}
+
+// combined scalar multiplication
+Vector2D Vector2D::operator*=(float scalar) {
+  x *= scalar;
+  y *= scalar;
+  return *this;
+}
+
+// combined scalar division
+Vector2D Vector2D::operator/=(float scalar) {
+  /*
+   * NOTE: no check for division by 0
+   */
+  float oneOverScalar = 1.0f / scalar;
+  x *= oneOverScalar;
+  y *= oneOverScalar;
+  return *this;
+}
+
+// dot product
+float Vector2D::operator*(const Vector2D &v2) const {
+  return x * v2.x + y * v2.y;
+}
+
+// normalize
 void Vector2D::normalize() {
-  float l = length();
-  // division by 0 not allowed
-  if (l > 0) {
-    m_x = m_x * 1/l;
-    m_y = m_y * 1/l;
+  float magnitudeSquared = x*x + y *y;
+  if (magnitudeSquared > 0.0f) {
+    float oneOverMagnitude = 1.0f / sqrt(magnitudeSquared);
+    x *= oneOverMagnitude;
+    y *= oneOverMagnitude;
   }
 }
 
-Vector2D Vector2D::operator+(const Vector2D& v2) {
-  return Vector2D(m_x + v2.m_x, m_y + v2.m_y);
+// magnitude
+float Vector2D::magnitude() {
+  return sqrt(x*x + y*y);
 }
 
-Vector2D Vector2D::operator+=(const Vector2D& v2) {
-  m_x += v2.m_x;
-  m_y += v2.m_y;
-  return *this;
-}
-
-Vector2D Vector2D::operator-(const Vector2D& v2) {
-  return Vector2D(m_x - v2.m_x, m_y - v2.m_y);
-}
-
-Vector2D Vector2D::operator-=(const Vector2D& v2) {
-  m_x -= v2.m_x;
-  m_y -= v2.m_y;
-  return *this;
-}
-
-Vector2D Vector2D::operator*(float scalar) {
-  return Vector2D(m_x * scalar, m_y * scalar);
-}
-
-Vector2D Vector2D::operator*=(float scalar) {
-  m_x *= scalar;
-  m_y *= scalar;
-  return *this;
-}
-
-Vector2D Vector2D::operator/(float scalar) {
-  return Vector2D(m_x / scalar, m_y / scalar);
-}
-
-Vector2D Vector2D::operator/=(float scalar) {
-  m_x /= scalar;
-  m_y /= scalar;
-  return *this;
+// distance
+float Vector2D::distance(const Vector2D &v2) {
+  float dx = x - v2.x;
+  float dy = y - v2.y;
+  return sqrt(dx * dx + dy * dy);
 }

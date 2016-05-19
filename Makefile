@@ -14,6 +14,13 @@ LINKER_FLAGS = Vector2D.cpp
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = main
 
+#test config
+TEST_OBJS = tests.cpp
+TEST_OBJ_NAME = test
+
 #This is the target that compiles our executable
 all : $(OBJS)
 		$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+
+test : $(OBJS)
+		$(CC) $(TEST_OBJS) $(COMPILER_FLAGS) -o $(TEST_OBJ_NAME)
